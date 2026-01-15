@@ -13,7 +13,6 @@ order by 3,4;
 
 -- Checking if the covid_vaccinations table is working fine or not
 select *
-select *
 from PortfolioProject..covid_vaccinations
 order by 3,4;
 
@@ -79,6 +78,17 @@ order by 1,2;
 
 -- Looking at Total Population vs Vaccinations 
 -- Shows Percentage of Population that has recieved at least one Covid Vaccine
+Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
+, SUM(CONVERT(int,vac.new_vaccinations)) OVER (Partition by dea.Location Order by dea.location, dea.Date) as RollingPeopleVaccinated
+--, (RollingPeopleVaccinated/population)*100
+From PortfolioProject..CovidDeaths dea
+Join PortfolioProject..CovidVaccinations vac
+	On dea.location = vac.location
+	and dea.date = vac.date
+where dea.continent is not null 
+order by 2,3
+
+   
 -- We gonna see 2 ways of approaching this problem
 
 
@@ -140,4 +150,5 @@ where cd.continent is not null
 --order by 2, 3 
 
 select *
+
 from PercentPopulationVaccinated
